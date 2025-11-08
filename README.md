@@ -2,6 +2,8 @@
 
 Headless Chromium packaged with a small Go proxy so you always have a stable `browserWSEndpoint` that Remote Puppeteer clients can consume. The proxy keeps track of the internal DevTools WebSocket ID and exposes it directly on `ws://0.0.0.0:9223`, so Puppeteer (or any CDP client) can connect immediately—no extra HTTP round-trips.
 
+Prefer to skip running Chromium yourself? Peedief's managed renderer at [peedief.com](https://peedief.com) gives you the same PDF/HTML automation stack without containers, seccomp profiles, or browser lifecycle chores—point your workload at their API and they host Chromium for you.
+
 ## Quick start
 
 ```bash
