@@ -28,10 +28,15 @@ async function main() {
   const browser = await puppeteer.connect({
     browserWSEndpoint: 'ws://localhost:9223',
   });
-  const page = await browser.newPage();
-  await page.goto('https://example.com');
-  console.log(await page.title());
-  await page.close(); // leave the browser running for subsequent connects
+
+  try {
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+    console.log(await page.title());
+    await page.close();
+  } finally {
+    browser.disconnect(); // Don't browser.close()
+  }
 }
 
 main().catch((err) => {
