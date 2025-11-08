@@ -8,14 +8,11 @@ Headless Chromium packaged with a small Go proxy so you always have a stable `br
 # Download the seccomp profile (store it next to your Dockerfile)
 curl -o chromium.json https://raw.githubusercontent.com/peedief/browserd/main/chromium.json
 
-# Build the container
-docker build -t browserd .
-
 # Run it and publish the proxy port with Chromium's seccomp profile
 docker run --rm \
   --security-opt seccomp=chromium.json \
   -p 9223:9223 --name browserd \
-  browserd
+  ghcr.io/peedief/browserd:v1.0.0
 ```
 
 Once the container is up, the DevTools endpoint is ready at `ws://localhost:9223`. You can point Puppeteer straight at that URL; the proxy handles discovering the internal `/devtools/browser/<id>` behind the scenes and keeps the endpoint stable, which means you can safely run multiple containers behind a load balancer or network proxy.
@@ -50,7 +47,7 @@ Because the proxy maintains a single connection to Chromium’s DevTools backend
 ```yaml
 services:
   browserd:
-    build: .
+    image: ghcr.io/peedief/browserd:v1.0.0
     ports:
       - "9223:9223"
     security_opt:
